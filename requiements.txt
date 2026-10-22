@@ -1,1 +1,1 @@
-requiements.txt
+requirements.txt
