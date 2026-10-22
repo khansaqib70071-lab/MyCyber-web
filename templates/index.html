@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyCyber - Website Vulnerability Scanner</title>
+    <style>
+        /* کلر سکیم اور مین تھیم */
+        :root {
+            --bg-color: #0a0a0c;
+            --card-bg: #121216;
+            --primary-color: #00bcd4;
+            --text-main: #ffffff;
+            --text-muted: #aaaaaa;
+            --border-color: #26262b;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* نیویگیشن بار کا ڈیزائن */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background-color: rgba(18, 18, 22, 0.8);
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 16px;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* مین ہیرو سیکشن */
+        .hero-section {
+            text-align: center;
+            padding: 80px 20px 40px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-section h1 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        .hero-section h1 span {
+            color: var(--primary-color);
+        }
+
+        .hero-section p {
+            color: var(--text-muted);
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        /* پرائسنگ سیکشن کا مین کنٹینر (گرڈ لے آؤٹ جو کبھی کارڈز کو گرنے نہیں دے گا) */
+        .pricing-container {
+            display: grid !important;
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 30px !important;
+            width: 100% !important;
+            max-width: 1140px !important;
+            margin: 40px auto 80px auto !important;
+            padding: 0 20px !important;
+            box-sizing: border-box !important;
+            align-items: start !important;
+        }
+
+        /* کارڈز کا خوبصورت انفرادی ڈیزائن */
+        .price-card {
+            background-color: var(--card-bg) !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 12px !important;
+            padding: 35px 30px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: space-between !important;
+            height: 100% !important;
+            min-height: 440px !important;
+            box-sizing: border-box !important;
+            transition: transform 0.3s, border-color 0.3s;
+            position: relative;
+        }
+
+        .price-card:hover {
+            transform: translateY(-5px);
+            border-color: #3a3a42;
+        }
+
+        /* پرو کارڈ کے لیے چمکدار بارڈر */
+        .price-card.popular {
+            border: 2px solid var(--primary-color) !important;
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            right: 30px;
+            background-color: var(--primary-color);
+            color: #000000;
+            padding: 3px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        /* کارڈ کے اندر کا ٹیکسٹ اور لسٹ */
+        .card-header h3 {
+            font-size: 22px;
+            margin: 0 0 10px 0;
+            color: var(--text-main);
+        }
+
+        .card-header .price {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 15px 0;
+            color: var(--text-main);
+        }
+
+        .card-header .price span {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: normal;
+        }
+
+        .pro-price {
+            color: var(--primary-color) !important;
+        }
+
+        .card-features {
+            list-style: none;
+            padding: 0;
+            margin: 25px 0 0 0;
+            text-align: left;
+        }
+
+        .card-features li {
+            margin-bottom: 12px;
+            font-size: 15px;
+            color: #dddddd;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-features li.disabled {
+            color: #555555;
+        }
+
+        /* بٹنز کا ڈیزائن */
+        .card-btn {
+            width: 100% !important;
+            padding: 14px !important;
+            border-radius: 8px !important;
+            font-size: 15px !important;
+            font-weight: bold !important;
+            cursor: pointer !important;
+            transition: background-color 0.3s;
+            margin-top: 30px !important;
+            box-sizing: border-box !important;
+        }
+
+        .btn-secondary {
+            background-color: #1e1e24;
+            border: 1px solid #3a3a42;
+            color: var(--text-main);
+        }
+
+        .btn-secondary:hover {
+            background-color: #2a2a32;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border: none;
+            color: #000000;
+        }
+
+        .btn-primary:hover {
+            background-color: #009cb0;
+        }
+
+        /* فوٹر کا ڈیزائن */
+        .footer {
+            margin-top: auto;
+            background-color: #070709;
+            padding: 30px 20px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* موبائل اور ٹیبلٹ کے لیے ریسپونسیو لے آؤٹ */
+        @media (max-width: 992px) {
+            .pricing-container {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+        }
+
+        @media (max-width: 680px) {
+            .pricing-container {
+                grid-template-columns: 1fr !important;
+            }
+            .navbar {
+                padding: 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- MyCyber URL Scanner Box -->
+<div style="text-align: center; margin: 30px auto; max-width: 600px; padding: 25px; background: #111; border: 1px solid #00adb5; border-radius: 12px; color: white; font-family: sans-serif;">
+    <h2 style="color: #00adb5; margin-bottom: 10px;">MyCyber Scanner Engine</h2>
+    <p style="color: #ccc; font-size: 14px; margin-bottom: 20px;">اپنی ویب سائٹ کا لنک (URL) ڈالیں اور ہیکنگ کے خطرات چیک کریں:</p>
+    
+    <form action="/scan" method="POST" style="margin-bottom: 15px;">
+        <input type="url" name="url" placeholder="https://example.com" required 
+               style="width: 70%; padding: 12px; border-radius: 6px; border: 1px solid #333; background: #222; color: white; font-size: 14px;">
+        <button type="submit" style="padding: 12px 20px; background: #00adb5; color: black; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px; margin-left: 5px;">
+            Scan Now
+        </button>
+    </form>
+
+    <!-- یہاں اسکیننگ کا لائیو رزلٹ شو ہوگا -->
+    {% if scanning_result %}
+        <div style="margin-top: 25px; text-align: left; background: #1a1a1a; padding: 15px; border-radius: 6px; border-left: 4px solid #00adb5;">
+            <h3 style="margin-top: 0; color: #fff; font-size: 16px;">Scan Report for: <span style="color: #00adb5;">{{ scanning_result.url }}</span></h3>
+            <p style="font-size: 14px;"><strong>Security Status:</strong> 
+                {% if scanning_result.status == 'Vulnerable' %}
+                    <span style="color: #ff5722; font-weight: bold;">⚠️ Vulnerable</span>
+                {% else %}
+                    <span style="color: #4caf50; font-weight: bold;">✅ Secure</span>
+                {% endif %}
+            </p>
+            <h4 style="color: #ccc; font-size: 14px; margin-bottom: 5px;">Detected Risks:</h4>
+            <ul style="padding-left: 20px; margin: 0; font-size: 13px; line-height: 1.6;">
+                {% if scanning_result.vulnerabilities %}
+                    {% for vuln in scanning_result.vulnerabilities %}
+                        <li style="color: #ff5722;">{{ vuln }}</li>
+                    {% endfor %}
+                {% else %}
+                    <li style="color: #4caf50;">[+] No immediate system vulnerabilities found. Looking good!</li>
+                {% endif %}
+            </ul>
+        </div>
+    {% endif %}
+</div>
+    <!-- نیویگیشن بار -->
+    <nav class="navbar">
+        <a href="#" class="logo">MyCyber</a>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="#">Features</a></li>
+            <li><a href="#">Pricing</a></li>
+        </ul>
+    </nav>
+
+    <!-- ہیرو سیکشن -->
+    <div class="hero-section">
+        <h1>MyCyber <span>Pricing Plans</span></h1>
+        <p>Choose the perfect tier to safeguard your web applications from cyber threats and data breaches vulnerabilities efficiently.</p>
+    </div>
+
+    <!-- پرائسنگ کارڈز کا مین سیکشن (گرڈ سسٹم) -->
+    <div class="pricing-container">
+
+        <!-- ۱. پہلا کارڈ: فری پلان -->
+        <div class="price-card">
+            <div class="card-header">
+                <h3>Free Plan</h3>
+                <div class="price">$0 <span>/mo</span></div>
+                <ul class="card-features">
+                    <li><span style="color: var(--primary-color);">✓</span> 3 Basic Scans Daily</li>
+                    <li><span style="color: var(--primary-color);">✓</span> Standard Regex Check</li>
+                    <li class="disabled"><span>X</span> No Premium Support</li>
+                    <li class="disabled"><span>X</span> No Custom Report PDF</li>
+                </ul>
+            </div>
+            <button class="card-btn btn-secondary">Current Plan</button>
+        </div>
+
+        <!-- ۲. دوسرا کارڈ: پرو پلان -->
+        <div class="price-card popular">
+            <span class="popular-badge">POPULAR</span>
+            <div class="card-header">
+                <h3>Premium Pro</h3>
+                <div class="price pro-price">$9 <span>/mo</span></div>
+                <ul class="card-features">
+                    <li><span style="color: var(--primary-color);">✓</span> Unlimited Daily Scans</li>
+                    <li><span style="color: var(--primary-color);">✓</span> Deep Malware Patterns</li>
+                    <li><span style="color: var(--primary-color);">✓</span> Advanced Phishing Check</li>
+                    <li><span style="color: var(--primary-color);">✓</span> Automated Backup Tool</li>
+                </ul>
+            </div>
+            <button class="card-btn btn-primary">Buy Now</button>
+        </div>
+
+        <!-- ۳. تیسرا کارڈ: ڈویلپر پلان (جس کی تفصیلات غائب تھیں) -->
+        <div class="price-card">
+            <div class="card-header">
+                <h3>Developer Plan</h3>
+                <div class="price">Custom <span>/mo</span></div>
+                <ul class="card-features">
+                    <li><span style="color: var(--primary-color);">✓</span> Everything in Pro</li>
+                    <li><span style="color: var(--primary-color);">✓</span> Download PDF Reports</li>
+                    <li><span style="color: var(--primary-color);">✓</span> Developer API Access</li>
+                    <li><span style="color: var(--primary-color);">✓</span> 24/7 Dedicated Support</li>
+                </ul>
+            </div>
+            <button class="card-btn btn-secondary">Contact Us</button>
+        </div>
+
+    </div>
